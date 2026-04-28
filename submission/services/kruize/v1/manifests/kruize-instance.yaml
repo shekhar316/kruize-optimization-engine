@@ -13,10 +13,9 @@ spec:
   namespace: "openshift-tuning"
   
   # Container images - using modern Kruize UI
-  autotune_image: "quay.io/kruize/autotune_operator:0.9"
-  autotune_ui_image: "quay.io/rh-ee-shesaxen/kruize-ui:catalogathon"
-  optimizer_image: "quay.io/kruize/kruize-optimizer:0.0.1"
-  
+  autotune_image: "dev-registry-quay-catalogathon-registry.apps.hthon-dev.svl.ibm.com/sccat-7aa7afd3-ca2a-43e2-81a8-8f5e22900927/autotune:catalogathon"
+  autotune_ui_image: "dev-registry-quay-catalogathon-registry.apps.hthon-dev.svl.ibm.com/sccat-7aa7afd3-ca2a-43e2-81a8-8f5e22900927/kruize-ui:catalogathon"
+  optimizer_image: "dev-registry-quay-catalogathon-registry.apps.hthon-dev.svl.ibm.com/sccat-7aa7afd3-ca2a-43e2-81a8-8f5e22900927/optimizer:catalogathon"
   # Persistent Volume configuration for database
   persistentVolume:
     name: "kruize-db-pv-volume"

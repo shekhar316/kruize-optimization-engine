@@ -26,7 +26,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: manager
-        image: kruize-operator:latest
+        image: dev-registry-quay-catalogathon-registry.apps.hthon-dev.svl.ibm.com/sccat-7aa7afd3-ca2a-43e2-81a8-8f5e22900927/kruize-operator:catalogathon
         imagePullPolicy: IfNotPresent
         command:
         - /app/manager
