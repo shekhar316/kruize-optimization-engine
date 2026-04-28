@@ -1,0 +1,75 @@
+apiVersion: kruize.io/v1alpha1
+kind: Kruize
+metadata:
+  name: sccat-kruize-sample
+  namespace: openshift-tuning
+  labels:
+    app.kubernetes.io/name: sccat-kruize-optimization-engine
+    app.kubernetes.io/instance: sccat-kruize-sample
+    app.kubernetes.io/managed-by: kustomize
+spec:
+  # OpenShift cluster configuration
+  cluster_type: "openshift"
+  namespace: "openshift-tuning"
+  
+  # Container images - using modern Kruize UI
+  autotune_image: "dev-registry-quay-catalogathon-registry.apps.hthon-dev.svl.ibm.com/sccat-7aa7afd3-ca2a-43e2-81a8-8f5e22900927/autotune:catalogathon"
+  autotune_ui_image: "dev-registry-quay-catalogathon-registry.apps.hthon-dev.svl.ibm.com/sccat-7aa7afd3-ca2a-43e2-81a8-8f5e22900927/kruize-ui:catalogathon"
+  optimizer_image: "dev-registry-quay-catalogathon-registry.apps.hthon-dev.svl.ibm.com/sccat-7aa7afd3-ca2a-43e2-81a8-8f5e22900927/optimizer:catalogathon"
+  # Persistent Volume configuration for database
+  persistentVolume:
+    name: "sccat-kruize-db-pv-volume"
+    storageClassName: "manual"
+    capacity:
+      storage: "500Mi"
+    accessModes:
+      - "ReadWriteMany"
+    hostPath:
+      path: "/mnt/data"
+    labels:
+      type: "local"
+      app: "kruize-db"
+  
+  # Persistent Volume Claim configuration
+  persistentVolumeClaim:
+    name: "kruize-db-pv-claim"
+    storageClassName: "manual"
+    accessModes:
+      - "ReadWriteMany"
+    resources:
+      requests:
+        storage: "500Mi"
+    labels:
+      app: "kruize-db"
+  
+  # Database resource configuration
+  kruize-db:
+    resources:
+      requests:
+        memory: "100Mi"
+        cpu: "0.5"
+      limits:
+        memory: "100Mi"
+        cpu: "0.5"
+    
+    # Volume mount configuration (container-level)
+    volumeMounts:
+      - name: "kruize-db-storage"
+        mountPath: "/var/lib/pgsql/data"
+    
+    # Volume configuration (pod-level)
+    volumes:
+      - name: "kruize-db-storage"
+        persistentVolumeClaim:
+          claimName: "kruize-db-pv-claim"
+  
+  # Kruize application resource configuration
+  kruize:
+    resources:
+      requests:
+        memory: "768Mi"
+        cpu: "0.7"
+      limits:
+        memory: "768Mi"
+        cpu: "0.7"
+

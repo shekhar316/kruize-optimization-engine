@@ -1,0 +1,41 @@
+name: sccat-kruize-optimization-engine
+display_name: SCCAT Kruize Optimization Engine
+description: Intelligent Kubernetes resource optimization with AI-powered cost and performance recommendations for OpenShift (Sovereign Core Catalog submission)
+version: v1
+category: optimization
+platform: openshift
+tags:
+  - optimization
+  - cost-management
+  - performance
+  - ai-powered
+  - resource-management
+  - sovereign
+  - openshift
+plans:
+  - id: standard
+    name: Standard
+    description: Single-tenant Kruize deployment for OpenShift with full optimization capabilities
+    resources:
+      cpu: "1.2"
+      memory: "868Mi"
+      storage: "500Mi"
+metadata:
+  maintainer: Kruize Community
+  source: https://github.com/kruize/autotune
+  operator_source: https://github.com/kruize/kruize-operator
+  documentation: https://github.com/kruize/autotune/tree/master/design
+  license: Apache-2.0
+  sovereign_compliant: true
+  namespace: openshift-tuning
+  features:
+    - CPU and memory right-sizing recommendations
+    - Namespace quota optimization
+    - GPU allocation recommendations
+    - Java runtime tuning
+    - Cost vs performance profiles
+    - Continuous auto-generated recommendations
+    - VPA integration support
+    - All features enabled by default
+
+

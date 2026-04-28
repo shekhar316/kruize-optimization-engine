@@ -1,0 +1,135 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Namespace for all resources
+namespace: {{ namespace }}
+
+# Common labels applied to all resources
+labels:
+- includeSelectors: true
+  pairs:
+    app: sccat-kruize-optimization-engine
+    service-type: sccat-kruize-optimization-engine
+    instance: {{ instance_name }}
+    managed-by: byop-broker
+    environment: {{ environment }}
+    app.kubernetes.io/name: sccat-kruize-optimization-engine
+    app.kubernetes.io/part-of: sccat-kruize-optimization
+    sovereign-core/service: sccat-kruize-optimization-engine
+
+# Common annotations
+commonAnnotations:
+  byop.ibm.com/instance-id: "{{ instance_id }}"
+  byop.ibm.com/service-type: "sccat-kruize-optimization-engine"
+  byop.ibm.com/cluster: "{{ cluster_name }}"
+
+# Base resources from service manifests
+resources:
+  - ../../../services/sccat-kruize-optimization-engine/v1/manifests
+
+# Strategic merge patches for customization
+patches:
+  # Patch Operator Deployment for instance-specific configuration
+  - target:
+      kind: Deployment
+      name: kruize-operator
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: kruize-operator-{{ instance_name }}
+      - op: replace
+        path: /spec/selector/matchLabels/instance
+        value: {{ instance_name }}
+      - op: replace
+        path: /spec/template/metadata/labels/instance
+        value: {{ instance_name }}
+{% if replicas %}
+      - op: replace
+        path: /spec/replicas
+        value: {{ replicas }}
+{% endif %}
+
+  # Patch Database StatefulSet for instance-specific configuration
+  - target:
+      kind: StatefulSet
+      name: kruize-db
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: kruize-db-{{ instance_name }}
+      - op: replace
+        path: /spec/serviceName
+        value: kruize-db-{{ instance_name }}
+      - op: replace
+        path: /spec/selector/matchLabels/instance
+        value: {{ instance_name }}
+      - op: replace
+        path: /spec/template/metadata/labels/instance
+        value: {{ instance_name }}
+{% if storage_size %}
+      - op: replace
+        path: /spec/volumeClaimTemplates/0/spec/resources/requests/storage
+        value: {{ storage_size }}
+{% endif %}
+
+  # Patch Operator Service for instance-specific configuration
+  - target:
+      kind: Service
+      name: kruize-operator
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: kruize-operator-{{ instance_name }}
+      - op: replace
+        path: /spec/selector/instance
+        value: {{ instance_name }}
+
+  # Patch Database Service for instance-specific configuration
+  - target:
+      kind: Service
+      name: kruize-db
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: kruize-db-{{ instance_name }}
+      - op: replace
+        path: /spec/selector/instance
+        value: {{ instance_name }}
+
+  # Patch ConfigMap for instance-specific configuration
+  - target:
+      kind: ConfigMap
+      name: kruize-config
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: kruize-config-{{ instance_name }}
+{% if prometheus_url %}
+      - op: replace
+        path: /data/PROMETHEUS_URL
+        value: {{ prometheus_url }}
+{% endif %}
+{% if log_level %}
+      - op: replace
+        path: /data/LOG_LEVEL
+        value: {{ log_level }}
+{% endif %}
+
+  # Patch Kruize CR instance
+  - target:
+      kind: Kruize
+      name: kruize-instance
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: kruize-{{ instance_name }}
+{% if cpu_limit %}
+      - op: replace
+        path: /spec/resources/limits/cpu
+        value: {{ cpu_limit }}
+{% endif %}
+{% if memory_limit %}
+      - op: replace
+        path: /spec/resources/limits/memory
+        value: {{ memory_limit }}
+{% endif %}

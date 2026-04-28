@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: sccat-kruize-optimization-engine-app-set
+  namespace: ARGOCD_NAMESPACE
+  labels:
+    app: sccat-kruize-optimization-engine
+    service-type: sccat-kruize-optimization-engine
+    cluster: CLUSTER_SERVER
+spec:
+  generators:
+    - git:
+        files:
+          - path: "instances/sccat-kruize-optimization-engine/*/metadata.yaml"
+        repoURL: GITOPS_REPO_URL
+        revision: GITOPS_REPO_REVISION
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  template:
+    metadata:
+      labels:
+        app: sccat-kruize-optimization-engine
+        service-type: sccat-kruize-optimization-engine
+        cluster: CLUSTER_SERVER
+        instance: "{{ instance_name }}"
+      name: "sccat-kruize-{{ instance_name }}"
+    spec:
+      destination:
+        server: https://CLUSTER_SERVER
+        namespace: "{{ namespace }}"
+      project: ARGOCD_PROJECT
+      source:
+        path: "instances/sccat-kruize-optimization-engine/{{ instance_name }}/"
+        repoURL: GITOPS_REPO_URL
+        targetRevision: GITOPS_REPO_REVISION
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

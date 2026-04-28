@@ -1,0 +1,76 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sccat-kruize-operator-role
+  namespace: openshift-tuning
+rules:
+# ConfigMaps - for configuration management
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["create", "get", "list", "watch", "update", "patch"]
+
+# Secrets - for credentials management
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["create", "get", "list", "watch"]
+
+# Services - for exposing Kruize endpoints
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+
+# ServiceAccounts - for pod identity
+- apiGroups: [""]
+  resources: ["serviceaccounts"]
+  verbs: ["create", "get", "list", "watch"]
+
+# Pods - for managing Kruize application pods
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+
+# PersistentVolumeClaims - for database storage
+- apiGroups: [""]
+  resources: ["persistentvolumeclaims"]
+  verbs: ["create", "get", "list", "watch", "update", "patch"]
+
+# Events - for status reporting
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create", "patch"]
+
+# Deployments - for managing operator and application deployments
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+
+# StatefulSets - for database deployment
+- apiGroups: ["apps"]
+  resources: ["statefulsets"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+
+# Kruize CRD - custom resource management
+- apiGroups: ["kruize.io"]
+  resources: ["kruizes"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+
+# Kruize CRD status
+- apiGroups: ["kruize.io"]
+  resources: ["kruizes/status"]
+  verbs: ["get", "update", "patch"]
+
+# Kruize CRD finalizers
+- apiGroups: ["kruize.io"]
+  resources: ["kruizes/finalizers"]
+  verbs: ["update"]
+
+# Leader Election - for operator high availability
+- apiGroups: ["coordination.k8s.io"]
+  resources: ["leases"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+
+# Routes (OpenShift) - for external access
+- apiGroups: ["route.openshift.io"]
+  resources: ["routes"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+
