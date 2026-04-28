@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Kruize Service Instance Configuration",
+  "description": "Configuration schema for Kruize optimization engine on OpenShift",
+  "type": "object",
+  "required": [
+    "namespace"
+  ],
+  "properties": {
+    "namespace": {
+      "type": "string",
+      "description": "Target namespace for Kruize deployment (default: openshift-tuning)",
+      "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$",
+      "minLength": 1,
+      "maxLength": 63,
+      "default": "openshift-tuning",
+      "examples": [
+        "openshift-tuning",
+        "kruize-prod"
+      ]
+    },
+    "prometheus_url": {
+      "type": "string",
+      "description": "Prometheus endpoint URL for metrics collection",
+      "format": "uri",
+      "default": "http://prometheus-k8s.openshift-monitoring.svc:9090",
+      "examples": [
+        "http://prometheus-k8s.openshift-monitoring.svc:9090",
+        "http://prometheus-server.monitoring.svc:9090"
+      ]
+    },
+    "storage_size": {
+      "type": "string",
+      "description": "Storage size for database PersistentVolumeClaim",
+      "pattern": "^[0-9]+(Mi|Gi)$",
+      "default": "500Mi",
+      "examples": [
+        "500Mi",
+        "1Gi",
+        "5Gi"
+      ]
+    },
+    "storage_class": {
+      "type": "string",
+      "description": "StorageClass name for PersistentVolumeClaim",
+      "default": "manual",
+      "examples": [
+        "manual",
+        "gp2",
+        "standard"
+      ]
+    },
+    "kruize_cpu_request": {
+      "type": "string",
+      "description": "CPU request for Kruize application pod",
+      "default": "0.7",
+      "examples": ["0.5", "0.7", "1.0"]
+    },
+    "kruize_cpu_limit": {
+      "type": "string",
+      "description": "CPU limit for Kruize application pod",
+      "default": "0.7",
+      "examples": ["0.7", "1.0", "2.0"]
+    },
+    "kruize_memory_request": {
+      "type": "string",
+      "description": "Memory request for Kruize application pod",
+      "default": "768Mi",
+      "examples": ["512Mi", "768Mi", "1Gi"]
+    },
+    "kruize_memory_limit": {
+      "type": "string",
+      "description": "Memory limit for Kruize application pod",
+      "default": "768Mi",
+      "examples": ["768Mi", "1Gi", "2Gi"]
+    },
+    "db_cpu_request": {
+      "type": "string",
+      "description": "CPU request for PostgreSQL database pod",
+      "default": "0.5",
+      "examples": ["0.5", "1.0"]
+    },
+    "db_cpu_limit": {
+      "type": "string",
+      "description": "CPU limit for PostgreSQL database pod",
+      "default": "0.5",
+      "examples": ["0.5", "1.0"]
+    },
+    "db_memory_request": {
+      "type": "string",
+      "description": "Memory request for PostgreSQL database pod",
+      "default": "100Mi",
+      "examples": ["100Mi", "256Mi", "512Mi"]
+    },
+    "db_memory_limit": {
+      "type": "string",
+      "description": "Memory limit for PostgreSQL database pod",
+      "default": "100Mi",
+      "examples": ["100Mi", "256Mi", "512Mi"]
+    },
+    "log_level": {
+      "type": "string",
+      "enum": ["DEBUG", "INFO", "WARN", "ERROR"],
+      "description": "Logging level for Kruize components",
+      "default": "INFO"
+    }
+  },
+  "additionalProperties": false
+}

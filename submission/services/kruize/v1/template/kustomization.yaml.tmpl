@@ -1,0 +1,126 @@
+# Jinja2 template for per-instance Kruize deployment
+# This template is rendered by the service broker with instance-specific parameters
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Set the namespace for this instance
+namespace: {{ spec.namespace }}
+
+# Base resources from the manifests directory
+bases:
+  - ../../manifests
+
+# Instance-specific patches
+patches:
+  # Patch operator deployment with instance-specific configuration
+  - target:
+      kind: Deployment
+      name: kruize-operator
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/env
+        value:
+          - name: WATCH_NAMESPACE
+            value: "{{ spec.namespace }}"
+          - name: CLUSTER_TYPE
+            value: "{{ spec.cluster_type }}"
+          - name: LOG_LEVEL
+            value: "{{ spec.log_level | default('INFO') }}"
+          - name: DEFAULT_AUTOTUNE_IMAGE
+            value: "quay.io/kruize/autotune:catalogathon-v1"
+          - name: DEFAULT_AUTOTUNE_UI_IMAGE
+            value: "quay.io/kruize/kruize-ui:catalogathon-v1"
+
+  # Patch operator resources
+  - target:
+      kind: Deployment
+      name: kruize-operator
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: "{{ spec.operator_cpu_request | default('500m') }}"
+            memory: "{{ spec.operator_memory_request | default('512Mi') }}"
+          limits:
+            cpu: "{{ spec.operator_cpu_limit | default('1000m') }}"
+            memory: "{{ spec.operator_memory_limit | default('2Gi') }}"
+
+  # Patch Kruize instance with custom resources
+  - target:
+      kind: Kruize
+      name: kruize-instance
+    patch: |-
+      - op: replace
+        path: /spec/cluster_type
+        value: "{{ spec.cluster_type }}"
+      - op: replace
+        path: /spec/namespace
+        value: "{{ spec.namespace }}"
+      - op: replace
+        path: /spec/kruize/resources/requests/cpu
+        value: "{{ spec.kruize_cpu_request | default('1000m') }}"
+      - op: replace
+        path: /spec/kruize/resources/requests/memory
+        value: "{{ spec.kruize_memory_request | default('2Gi') }}"
+      - op: replace
+        path: /spec/kruize/resources/limits/cpu
+        value: "{{ spec.kruize_cpu_limit | default('2000m') }}"
+      - op: replace
+        path: /spec/kruize/resources/limits/memory
+        value: "{{ spec.kruize_memory_limit | default('4Gi') }}"
+
+  # Patch database StatefulSet if database is enabled
+  {% if spec.database_enabled | default(true) %}
+  - target:
+      kind: StatefulSet
+      name: kruize-db
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/resources
+        value:
+          requests:
+            cpu: "{{ spec.db_cpu_request | default('500m') }}"
+            memory: "{{ spec.db_memory_request | default('1Gi') }}"
+          limits:
+            cpu: "{{ spec.db_cpu_limit | default('1000m') }}"
+            memory: "{{ spec.db_memory_limit | default('2Gi') }}"
+      - op: replace
+        path: /spec/volumeClaimTemplates/0/spec/resources/requests/storage
+        value: "{{ spec.storage_size | default('5Gi') }}"
+      {% if spec.storage_class %}
+      - op: add
+        path: /spec/volumeClaimTemplates/0/spec/storageClassName
+        value: "{{ spec.storage_class }}"
+      {% endif %}
+  {% endif %}
+
+# ConfigMap generator for instance-specific configuration
+configMapGenerator:
+  - name: kruize-config
+    behavior: merge
+    literals:
+      - cluster_type={{ spec.cluster_type }}
+      - prometheus_url={{ spec.prometheus_url | default('http://prometheus-k8s.openshift-monitoring.svc:9090') }}
+      - log_level={{ spec.log_level | default('INFO') }}
+      - db_enabled={{ spec.database_enabled | default(true) | string | lower }}
+
+  {% if spec.enable_metering | default(true) %}
+  - name: kruize-metering-config
+    behavior: merge
+    literals:
+      - metering_interval={{ spec.metering_interval | default(300) }}
+  {% endif %}
+
+# Common labels for this instance
+commonLabels:
+  app.kubernetes.io/instance: {{ instance_name }}
+  sovereign-core/tenant: {{ tenant_id }}
+  sovereign-core/service-instance: {{ instance_id }}
+
+# Namespace creation
+{% if spec.namespace != 'kruize-system' %}
+resources:
+  - namespace.yaml
+{% endif %}
