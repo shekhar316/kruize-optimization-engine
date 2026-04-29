@@ -369,26 +369,56 @@ Complete SPDX-format SBOMs for all components:
 
 ### Visual Summary / Demo Scenario
 
-#### Deployment Workflow
+#### ArgoCD Deployment Workflow
 
-![Deployment Flow](./images/deployment-flow.png)
-*Screenshot placeholder: ArgoCD deployment in progress*
+**📸 ArgoCD Deployment Screenshots**
 
-#### Optimization in Action
+![ArgoCD Application Sync](./images/argocd-deployment.png)
+*Placeholder: ArgoCD application sync status showing Kruize deployment in progress*
 
-![Kruize UI Dashboard](./images/kruize-ui-dashboard.png)
-*Screenshot placeholder: Kruize UI showing recommendations*
+![ArgoCD Resource Tree](./images/argocd-resource-tree.png)
+*Placeholder: ArgoCD resource tree displaying all Kruize components (Operator, Autotune, Optimizer, UI, Database)*
+
+![ArgoCD Sync Status](./images/argocd-sync-status.png)
+*Placeholder: Successful sync status with all resources healthy and synced*
+
+#### Kruize Dashboard & UI
+
+Experience the power of Kruize through our intuitive web interface:
+
+##### Dashboard Overview
+![Kruize Dashboard](./images/01%20kruize-dashboard.png)
+*Main dashboard showing workload optimization insights and cluster health*
+
+##### Workload Recommendations
+![Workload Recommendations](./images/01%20workload-recommendations.png)
+*Detailed workload recommendations with cost and performance profiles*
+
+##### Interactive Cluster View
+![Interactive Cluster View](./images/02%20interactive-cluster-view.png)
+*Interactive visualization of cluster resources and optimization opportunities*
+
+##### Tabular Cluster View with Filters
+![Tabular Cluster View](./images/03%20tabular-cluster-view-with-filters.png)
+*Comprehensive table view with advanced filtering capabilities*
+
+##### View Workload Recommendations
+![View Workload Recommendations](./images/04%20view-workload-recommendations.png)
+*Detailed workload-specific recommendations with actionable insights*
+
+##### Installed Profiles for Data Collection Transparency
+![Installed Profiles](./images/05%20installed-profiles-for-data-collection-transparency.png)
+*View installed data collection profiles for complete transparency*
+
+##### Experiment Creation
+![Experiment Creation](./images/10%20experiment-creation.png)
+*Create custom optimization experiments with specific parameters*
 
 #### Metering Data Flow
 
 ![Metering Integration](./images/metering-flow.png)
-*Screenshot placeholder: Metering sidecar logs showing successful POST*
+*Placeholder: Metering sidecar logs showing successful POST to Sovereign Core Metering API*
 
-
-#### Resource Optimization Results
-
-![Resource Savings](./images/resource-savings.png)
-*Screenshot placeholder: Before/after resource allocation comparison*
 
 
 ---
