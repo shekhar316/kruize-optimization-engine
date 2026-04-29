@@ -1,17 +1,30 @@
 # Kruize Optimization Engine - Catalogathon Project Report
 
-**Project Code:** 7aa7afd3-ca2a-43e2-81a8-8f5e22900927  
-**Service Name:** sccat-kruize-optimization-engine  
+**Project Code:** 7aa7afd3-ca2a-43e2-81a8-8f5e22900927
+**Service Name:** sccat-kruize-optimization-engine
 **Team:** Kruizers
-**Submission Date:** 29th April 2026
 
 ---
 
 [![Sovereign Core Compliant](https://img.shields.io/badge/Sovereign%20Core-Compliant-blue)](https://github.ibm.com/SovereignCore/catalogathon-guide)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 [![OpenShift](https://img.shields.io/badge/OpenShift-Ready-red)](https://www.redhat.com/en/technologies/cloud-computing/openshift)
-[![Security](https://img.shields.io/badge/Security-Rootless-brightgreen)](./SECURITY.md)
+[![Security](https://img.shields.io/badge/Security-Rootless-brightgreen)](../kruize-optimization-engine/catalog-service/services/sccat-kruize-optimization-engine/v1/SECURITY.md)
 
+---
+
+## 📋 Table of Contents
+
+- [Executive Summary](#executive-summary)
+- [Project Achievements](#project-achievements)
+- [Architecture Summary](#architecture-summary)
+- [Sovereignty Readiness](#sovereignty-readiness)
+- [Visual Summary / Demo Scenario](#visual-summary--demo-scenario)
+- [Project Difficulties and Findings](#project-difficulties-and-findings)
+- [Catalog Post Mortem](#catalog-post-mortem)
+- [Appendix](#appendix)
+
+---
 
 ## 🎯 Executive Summary
 
@@ -284,16 +297,16 @@ All images hosted in IBM dev registry:
 
 | Principle | Implementation | Status | Evidence |
 |-----------|----------------|--------|----------|
-| **Data Sovereignty** | All data processed in-cluster, no external calls | ✅ | [Architecture](#architecture-overview) |
-| **Operational Sovereignty** | Full lifecycle management via operator | ✅ | [Operator Design](./manifests/operator-deployment.yaml) |
-| **Security Sovereignty** | Rootless, least privilege, encrypted storage | ✅ | [SECURITY.md](./SECURITY.md) |
-| **Compliance Sovereignty** | SBOM, CVE tracking, audit logs | ✅ | [SBOM Directory](./sbom/) |
+| **Data Sovereignty** | All data processed in-cluster, no external calls | ✅ | [Architecture](#architecture-summary) |
+| **Operational Sovereignty** | Full lifecycle management via operator | ✅ | [Operator Design](../services/sccat-kruize-optimization-engine/v1/manifests/operator-deployment.yaml) |
+| **Security Sovereignty** | Rootless, least privilege, encrypted storage | ✅ | [SECURITY.md](../services/sccat-kruize-optimization-engine/v1/SECURITY.md) |
+| **Compliance Sovereignty** | SBOM, CVE tracking, audit logs | ✅ | [SBOM Directory](../services/sccat-kruize-optimization-engine/v1/sbom/) |
 | **Resource Sovereignty** | Within 8 CPU, 100GB limits | ✅ | [Resource Allocation](#component-breakdown) |
-| **Namespace Isolation** | Namespace-scoped RBAC only | ✅ | [RBAC Manifests](./manifests/) |
-| **Secret Management** | Pre-provisioned, external secrets support | ✅ | [Secret Strategy](./SECURITY.md#secret-management-approach-strongly-recommended) |
-| **Metering Integration** | Sidecar pattern, Sovereign Core API | ✅ | [METERING.md](./METERING.md) |
-| **Observability** | Prometheus integration, structured logging | ✅ | [OBSERVABILITY.md](./OBSERVABILITY.md) |
-| **GitOps Ready** | Kustomize-based, ArgoCD compatible | ✅ | [Deployment Guide](#deployment-guide) |
+| **Namespace Isolation** | Namespace-scoped RBAC only | ✅ | [RBAC Manifests](../services/sccat-kruize-optimization-engine/v1/manifests/) |
+| **Secret Management** | Pre-provisioned, external secrets support | ✅ | [Secret Strategy](../services/sccat-kruize-optimization-engine/v1/SECURITY.md#secret-management-approach-strongly-recommended) |
+| **Metering Integration** | Sidecar pattern, Sovereign Core API | ✅ | [METERING.md](../services/sccat-kruize-optimization-engine/v1/METERING.md) |
+| **Observability** | Prometheus integration, structured logging | ✅ | [OBSERVABILITY.md](../services/sccat-kruize-optimization-engine/v1/OBSERVABILITY.md) |
+| **GitOps Ready** | Kustomize-based, ArgoCD compatible | ✅ | [Deployment Guide](../services/sccat-kruize-optimization-engine/v1/README.md#deployment-guide) |
 
 #### What We Delivered for Sovereignty
 
@@ -328,11 +341,11 @@ All images hosted in IBM dev registry:
 
 Complete SPDX-format SBOMs for all components:
 
-- [`kruize-operator-catalogathon-sbom.json`](./sbom/kruize-operator-catalogathon-sbom.json) - Operator image
-- [`autotune-catalogathon-sbom.json`](./sbom/autotune-catalogathon-sbom.json) - Autotune engine
-- [`optimizer-catalogathon-sbom.json`](./sbom/optimizer-catalogathon-sbom.json) - Optimizer service
-- [`kruize-ui-catalogathon-sbom.json`](./sbom/kruize-ui-catalogathon-sbom.json) - Web UI
-- [`postgres-catalogathon-sbom.json`](./sbom/postgres-catalogathon-sbom.json) - Database
+- [`kruize-operator-catalogathon-sbom.json`](../services/sccat-kruize-optimization-engine/v1/sbom/kruize-operator-catalogathon-sbom.json) - Operator image
+- [`autotune-catalogathon-sbom.json`](../services/sccat-kruize-optimization-engine/v1/sbom/autotune-catalogathon-sbom.json) - Autotune engine
+- [`optimizer-catalogathon-sbom.json`](../services/sccat-kruize-optimization-engine/v1/sbom/optimizer-catalogathon-sbom.json) - Optimizer service
+- [`kruize-ui-catalogathon-sbom.json`](../services/sccat-kruize-optimization-engine/v1/sbom/kruize-ui-catalogathon-sbom.json) - Web UI
+- [`postgres-catalogathon-sbom.json`](../services/sccat-kruize-optimization-engine/v1/sbom/postgres-catalogathon-sbom.json) - Database
 
 #### Implementation Highlights
 
@@ -504,10 +517,10 @@ The constraints were challenging but fair, and the focus on sovereignty principl
 
 ### Quick Links
 
-- **Main README:** [../kruize-optimization-engine/catalog-service/services/sccat-kruize-optimization-engine/v1/README.md](../kruize-optimization-engine/catalog-service/services/sccat-kruize-optimization-engine/v1/README.md)
-- **Security Guide:** [../kruize-optimization-engine/catalog-service/services/sccat-kruize-optimization-engine/v1/SECURITY.md](../kruize-optimization-engine/catalog-service/services/sccat-kruize-optimization-engine/v1/SECURITY.md)
-- **Manifests:** [../kruize-optimization-engine/catalog-service/services/sccat-kruize-optimization-engine/v1/manifests/](../kruize-optimization-engine/catalog-service/services/sccat-kruize-optimization-engine/v1/manifests/)
-- **SBOM Directory:** [../kruize-optimization-engine/catalog-service/services/sccat-kruize-optimization-engine/v1/sbom/](../kruize-optimization-engine/catalog-service/services/sccat-kruize-optimization-engine/v1/sbom/)
+- **Main README:** [../services/sccat-kruize-optimization-engine/v1/README.md](../services/sccat-kruize-optimization-engine/v1/README.md)
+- **Security Guide:** [../services/sccat-kruize-optimization-engine/v1/SECURITY.md](../services/sccat-kruize-optimization-engine/v1/SECURITY.md)
+- **Manifests:** [../services/sccat-kruize-optimization-engine/v1/manifests/](../services/sccat-kruize-optimization-engine/v1/manifests/)
+- **SBOM Directory:** [../services/sccat-kruize-optimization-engine/v1/sbom/](../services/sccat-kruize-optimization-engine/v1/sbom/)
 
 
 ### Contact Information
