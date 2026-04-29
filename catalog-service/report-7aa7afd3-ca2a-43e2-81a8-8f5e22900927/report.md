@@ -529,6 +529,17 @@ The constraints were challenging but fair, and the focus on sovereignty principl
 - **Operator Repository:** https://github.com/kruize/kruize-operator
 - **Community:** https://github.com/kruize/autotune/discussions
 
----
+<br>
 
-*Generated for IBM Sovereign Core Catalogathon 2026*
+
+<div align="center">
+
+**🏆 Built for IBM Sovereign Core Catalogathon 2026**
+
+*Transforming Kubernetes optimization with intelligence inside the sovereign boundary*
+
+[![Sovereign Core](https://img.shields.io/badge/IBM-Sovereign%20Core-blue?style=for-the-badge)](https://github.ibm.com/SovereignCore)
+[![OpenShift](https://img.shields.io/badge/Red%20Hat-OpenShift-red?style=for-the-badge)](https://www.redhat.com/en/technologies/cloud-computing/openshift)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-Ready-326CE5?style=for-the-badge&logo=kubernetes)](https://kubernetes.io)
+
+</div>
