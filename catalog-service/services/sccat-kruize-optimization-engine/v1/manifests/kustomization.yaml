@@ -17,6 +17,7 @@ resources:
   - kruize-configmap.yaml
   - kruize-instance.yaml
   - metering-configmap.yaml
+  - metering-proxy/
 
 patchesStrategicMerge:
   - kruize-sidecar-patch.yaml
