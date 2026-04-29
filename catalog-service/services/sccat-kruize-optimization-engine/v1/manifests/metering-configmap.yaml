@@ -3,47 +3,17 @@ kind: ConfigMap
 metadata:
   name: sccat-kruize-metering-config
   namespace: openshift-tuning
-  labels:
-    app.kubernetes.io/name: sccat-kruize-optimization-engine
-    app.kubernetes.io/component: metering
 data:
-  # Metering endpoint configuration
   metering_enabled: "true"
-  metering_endpoint: "http://sovereign-core-metering.sovereign-core.svc.cluster.local:8080/api/v1/metering"
-  metering_interval: "300"  # Submit every 5 minutes
-  
-  # Metrics to track
+  metering_endpoint: "http://metering-proxy.openshift-tuning.svc.cluster.local:7329/api/v1/metering/resources/test-instance-subscription/usage"
+  metering_interval: "300"
   metrics_config: |
     {
       "metrics": [
         {
-          "name": "kruize.recommendations.generated",
+          "name": "kruize.experiments",
           "type": "counter",
-          "description": "Total number of recommendations generated"
-        },
-        {
-          "name": "kruize.workloads.monitored",
-          "type": "gauge",
-          "description": "Number of workloads currently being monitored"
-        },
-        {
-          "name": "kruize.optimization.cpu_savings",
-          "type": "gauge",
-          "description": "Estimated CPU savings in millicores",
-          "unit": "millicores"
-        },
-        {
-          "name": "kruize.optimization.memory_savings",
-          "type": "gauge",
-          "description": "Estimated memory savings in MiB",
-          "unit": "MiB"
-        },
-        {
-          "name": "kruize.instance.uptime",
-          "type": "counter",
-          "description": "Service uptime in hours",
-          "unit": "hours"
+          "description": "Number of Kruize experiments"
         }
       ]
     }
-

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: metering-proxy
+  labels:
+    app: metering-proxy
+    component: metering-api
+spec:
+  type: ClusterIP
+  ports:
+  - port: 7329
+    targetPort: 7329
+    protocol: TCP
+    name: http
+  selector:
+    app: metering-proxy

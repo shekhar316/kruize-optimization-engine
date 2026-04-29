@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metering-proxy
+  labels:
+    app: metering-proxy
+    component: metering-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metering-proxy
+  template:
+    metadata:
+      labels:
+        app: metering-proxy
+        component: metering-api
+    spec:
+      containers:
+      - name: metering-proxy
+        image: quay.io/metering-proxy:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 7329
+          name: http
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "7329"
+        - name: HOST
+          value: "0.0.0.0"
+        - name: STORAGE_TYPE
+          value: "file"
+        - name: STORAGE_DIR
+          value: "/app/.data"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 7329
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 3
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 7329
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: data
+          mountPath: /app/.data
+      volumes:
+      - name: data
+        emptyDir: {}
+      securityContext:
+        runAsNonRoot: true

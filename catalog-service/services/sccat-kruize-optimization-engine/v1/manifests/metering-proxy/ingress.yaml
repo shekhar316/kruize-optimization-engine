@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: metering-proxy
+  labels:
+    app: metering-proxy
+    component: metering-api
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+  # Remove 'host' to make ingress accessible via localhost without /etc/hosts modification
+  # - host: metering-proxy.local
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: metering-proxy
+            port:
+              number: 7329

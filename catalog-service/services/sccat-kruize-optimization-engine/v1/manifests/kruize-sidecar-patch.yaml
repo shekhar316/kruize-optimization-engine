@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kruize
+  namespace: openshift-tuning
+spec:
+  template:
+    spec:
+      containers:
+      - name: metering-sidecar
+        image: quay.io/bharathappali/kruize-metering:v1
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: METERING_ENABLED
+          valueFrom:
+            configMapKeyRef:
+              name: sccat-kruize-metering-config
+              key: metering_enabled
+        - name: METERING_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: sccat-kruize-metering-config
+              key: metering_endpoint
+        - name: METERING_INTERVAL
+          valueFrom:
+            configMapKeyRef:
+              name: sccat-kruize-metering-config
+              key: metering_interval
+        - name: KRUIZE_API_URL
+          value: "http://localhost:8080"
+        volumeMounts:
+        - name: metering-config
+          mountPath: /etc/metering
+          readOnly: true
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: metering-config
+        configMap:
+          name: sccat-kruize-metering-config
