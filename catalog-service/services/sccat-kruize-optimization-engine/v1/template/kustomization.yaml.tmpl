@@ -43,7 +43,7 @@ patches:
       - op: replace
         path: /spec/template/metadata/labels/instance
         value: {{ instance_name }}
-{% if replicas %}
+{% if replicas is defined %}
       - op: replace
         path: /spec/replicas
         value: {{ replicas }}
@@ -66,7 +66,7 @@ patches:
       - op: replace
         path: /spec/template/metadata/labels/instance
         value: {{ instance_name }}
-{% if storage_size %}
+{% if storage_size is defined %}
       - op: replace
         path: /spec/volumeClaimTemplates/0/spec/resources/requests/storage
         value: {{ storage_size }}
@@ -104,12 +104,12 @@ patches:
       - op: replace
         path: /metadata/name
         value: kruize-config-{{ instance_name }}
-{% if prometheus_url %}
+{% if prometheus_url is defined %}
       - op: replace
         path: /data/PROMETHEUS_URL
         value: {{ prometheus_url }}
 {% endif %}
-{% if log_level %}
+{% if log_level is defined %}
       - op: replace
         path: /data/LOG_LEVEL
         value: {{ log_level }}
@@ -123,12 +123,12 @@ patches:
       - op: replace
         path: /metadata/name
         value: kruize-{{ instance_name }}
-{% if cpu_limit %}
+{% if cpu_limit is defined %}
       - op: replace
         path: /spec/resources/limits/cpu
         value: {{ cpu_limit }}
 {% endif %}
-{% if memory_limit %}
+{% if memory_limit is defined %}
       - op: replace
         path: /spec/resources/limits/memory
         value: {{ memory_limit }}
