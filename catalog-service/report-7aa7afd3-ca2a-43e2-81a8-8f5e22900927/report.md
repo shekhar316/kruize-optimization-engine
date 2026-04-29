@@ -1,8 +1,8 @@
 # Kruize Optimization Engine - Catalogathon Project Report
 
-**Project Code:** 7aa7afd3-ca2a-43e2-81a8-8f5e22900927
-**Service Name:** sccat-kruize-optimization-engine
-**Team:** Kruizers
+- **Project Code:** 7aa7afd3-ca2a-43e2-81a8-8f5e22900927
+- **Service Name:** sccat-kruize-optimization-engine
+- **Team:** Kruizers
 
 ---
 
