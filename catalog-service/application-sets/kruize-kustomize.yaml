@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: sccat-kruize-optimization-engine-app-set
-  namespace: openshift-gitops
+  namespace: argocd
   labels:
     app: sccat-kruize-optimization-engine
     service-type: sccat-kruize-optimization-engine
