@@ -18,6 +18,9 @@ resources:
   - kruize-instance.yaml
   - metering-configmap.yaml
 
+patchesStrategicMerge:
+  - kruize-sidecar-patch.yaml
+
 # Common labels applied to all resources
 labels:
   - pairs:
