@@ -5,7 +5,7 @@ metadata:
   namespace: openshift-tuning
 data:
   metering_enabled: "true"
-  metering_endpoint: "http://metering-proxy.openshift-tuning.svc.cluster.local:8080/api/v1/metering/resources/test-instance-subscription/usage"
+  metering_endpoint: "http://metering-proxy.openshift-tuning.svc.cluster.local:7329/api/v1/metering/resources/test-instance-subscription/usage"
   metering_interval: "300"
   metrics_config: |
     {
